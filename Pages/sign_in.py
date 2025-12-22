@@ -3,32 +3,73 @@ import customtkinter as ctk
 import tkinter as tk
 from tkinter import messagebox
 from db_conn import get_connection
+import hashlib  # ✅ added
 
 HEADER_BG = "#6A0032"
 BUTTON_BG = "#6A0032"
 BORDER_COLOR = "#E0E0E0"
 
 
+def hash_password(pw: str) -> str:
+    return hashlib.sha256(pw.encode()).hexdigest()
+
+
 def handle_login(self):
-    email = self.email_entry.get().strip()
+    email = self.email_entry.get().strip().lower()
     pw = self.password_entry.get().strip()
+
+    if not email or not pw:
+        return None
 
     conn = get_connection()
     c = conn.cursor()
+
+    # ✅ Fetch stored password and compare in Python (supports hash + plaintext)
     c.execute(
-        "SELECT id, first_name, role FROM users WHERE email=? AND password=?",
-        (email, pw)
+        "SELECT id, first_name, role, password FROM users WHERE email=?",
+        (email,)
     )
-    user = c.fetchone()
+    row = c.fetchone()
+
+    if not row:
+        conn.close()
+        return None
+
+    user_id, first_name, role, stored_pw = row
+
+    typed_hash = hash_password(pw)
+
+    # ✅ Accept either:
+    # - stored password is plaintext (legacy)
+    # - stored password is sha256 hash (new)
+    ok = (stored_pw == pw) or (stored_pw == typed_hash)
+
+    if ok:
+        # ✅ Optional: migrate plaintext -> hashed automatically after successful login
+        # (so everything becomes consistent going forward)
+        if stored_pw == pw and stored_pw != typed_hash:
+            try:
+                c.execute("UPDATE users SET password=? WHERE id=?", (typed_hash, user_id))
+                conn.commit()
+            except Exception:
+                pass
+
+        conn.close()
+        return (user_id, first_name, role)
+
     conn.close()
-    return user
+    return None
 
 
 class SignInPage(ctk.CTkFrame):
     def __init__(self, master):
-        # Transparent: NO WHITE BACKGROUND
-        super().__init__(master, fg_color="transparent")
+        # CHANGE THIS: from "transparent" to "#F2F2F2"
+        super().__init__(master, fg_color="#F2F2F2", corner_radius=0)
+        
+        # Keep this, it ensures the frame fills the whole window
         self.pack(fill="both", expand=True)
+
+        # Your card and layout code remains the same...
 
         # ---------- Center modal card ----------
         self.card = ctk.CTkFrame(

@@ -7,7 +7,11 @@ from db_conn import get_connection
 from Pages.Asset import AssetsPage
 from Pages.check_out import CheckOutPage
 from Pages.check_in import CheckInPage
-from Pages.students import StudentsPage   
+from Pages.students import StudentsPage 
+from Pages.staff import StaffPage   
+from Pages.settings import SettingsPage   
+
+
 
 SIDEBAR_BG = "#6A0032"   # maroon
 CARD_BG = "#F5F5F5"      # light grey
@@ -98,10 +102,13 @@ class DashboardPage(ctk.CTkFrame):
         make_nav_button("Check Out", self.show_checkout_page)
         make_nav_button("Check In", self.show_checkin_page)
         make_nav_button("Assets", self.show_assets_page)
-        make_nav_button("History", self.show_students_page)   # 👈 NEW NAV BUTTON
+        make_nav_button("History", self.show_students_page)
 
         if self.role == "admin":
             make_nav_button("Staff", self.show_staff_page)
+
+        make_nav_button("Settings", self.show_settings_page)
+ 
 
         ctk.CTkLabel(self.sidebar, text="", fg_color=SIDEBAR_BG).pack(
             expand=True, fill="both"
@@ -386,6 +393,16 @@ class DashboardPage(ctk.CTkFrame):
         self.clear_content()
         self.current_view = StudentsPage(self.content_frame)
         self.current_view.pack(fill="both", expand=True)
+    
+    def show_staff_page(self):
+        self.clear_content()
+        self.current_view = StaffPage(self.content_frame)
+        self.current_view.pack(fill="both", expand=True)
+
+    def show_settings_page(self):
+        self.clear_content()
+        self.current_view = SettingsPage(self.content_frame, self.user_id)
+        self.current_view.pack(fill="both", expand=True)
 
     def show_placeholder(self, title, text):
         self.clear_content()
@@ -409,14 +426,20 @@ class DashboardPage(ctk.CTkFrame):
 
         self.current_view = view
 
-    def show_staff_page(self):
-        if hasattr(self.master, "show_staff_page"):
-            self.master.show_staff_page()
-        else:
-            self.show_placeholder("Staff", "Staff management page not wired yet.")
+
 
     # ---------- LOGOUT ----------
     def logout(self):
         if messagebox.askyesno("Logout", "Do you want to log out?"):
-            if hasattr(self.master, "show_sign_in"):
-                self.master.show_sign_in()
+            # 1. Reset resizable status
+            self.master.resizable(True, True)
+            
+            # 2. Force the window back to a smaller size suitable for login
+            # Replace 800x600 with your preferred Sign In dimensions
+            self.master.geometry("800x600") 
+            
+            # 3. Clear and show sign in
+            self.master.clear_page()
+            self.master.show_sign_in()
+
+

@@ -157,7 +157,7 @@ class SignUpPage(ctk.CTkFrame):
     def handle_sign_up(self):
         first = self.first_name_entry.get().strip()
         last = self.last_name_entry.get().strip()
-        email = self.email_entry.get().strip()
+        email = self.email_entry.get().strip().lower()
         pw = self.password_entry.get().strip()
         confirm = self.confirm_password_entry.get().strip()
 

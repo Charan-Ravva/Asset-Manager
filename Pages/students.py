@@ -11,15 +11,7 @@ def michigan_now():
 def to_michigan(ts: str | None):
     if not ts:
         return "-"
-    try:
-        utc_dt = datetime.strptime(ts, "%Y-%m-%d %H:%M:%S").replace(
-            tzinfo=ZoneInfo("UTC")
-        )
-        return utc_dt.astimezone(
-            ZoneInfo("America/Detroit")
-        ).strftime("%Y-%m-%d %H:%M:%S")
-    except Exception:
-        return ts
+    return ts  # already Michigan time
 
 
 

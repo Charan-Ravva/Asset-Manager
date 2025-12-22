@@ -37,7 +37,7 @@ class CheckInPage(ctk.CTkFrame):
 
         ctk.CTkLabel(
             top_bar,
-            text=" • Return equipment to SAC inventory",
+            text=" • Return equipment to inventory",
             font=ctk.CTkFont(size=13),
             text_color="#777777",
         ).pack(side="left", padx=(6, 0))

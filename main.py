@@ -16,7 +16,7 @@ class App(ctk.CTk):
         ctk.set_appearance_mode("Light")
         ctk.set_default_color_theme("blue")
 
-        self.title("SAC Asset Manager")
+        self.title("Asset Manager")
 
         self.current_page = None
 
@@ -40,16 +40,29 @@ class App(ctk.CTk):
     def show_landing(self):
         self.clear_page()
         # medium window for landing
-        self.resizable(True, True)
+        self.resizable(False, False)
         self.center_window(900, 540)
         self.current_page = LandingPage(self)
         self.current_page.pack(fill="both", expand=True)
 
     def show_sign_in(self):
         self.clear_page()
-        # slightly smaller width for sign in popup
+        
+        # 1. FORCE THE WINDOW OUT OF FULLSCREEN/MAXIMIZED
+        self.state("normal")  # This "un-maximizes" the window
+        self.attributes("-fullscreen", False) # Just in case you used attributes
+        
+        # 2. Reset constraints and color
         self.resizable(False, False)
+        self.configure(fg_color="#F2F2F2") 
+        self.minsize(0, 0) 
+        
+        # 3. Resize and Center
         self.center_window(720, 560)
+        
+        # 4. Refresh to apply the "normal" state before packing the page
+        self.update() 
+        
         self.current_page = SignInPage(self)
         self.current_page.pack(fill="both", expand=True)
 

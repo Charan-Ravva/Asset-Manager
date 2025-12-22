@@ -14,7 +14,7 @@ def init_db():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         first_name TEXT NOT NULL,
         last_name TEXT NOT NULL,
-        email TEXT NOT NULL UNIQUE,
+        email TEXT NOT NULL COLLATE NOCASE UNIQUE,
         password TEXT NOT NULL,
         role TEXT NOT NULL DEFAULT 'staff'   -- 'admin' or 'staff'
     );

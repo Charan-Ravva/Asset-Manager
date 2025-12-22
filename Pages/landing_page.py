@@ -111,7 +111,7 @@ class LandingPage(ctk.CTkFrame):
 
         subheading = ctk.CTkLabel(
             right,
-            text="Sign in to manage assets or create a staff account.",
+            text="Sign in to manage assets or create a account.",
             text_color="#555555",
             font=ctk.CTkFont(size=12),
             justify="left",
@@ -135,7 +135,7 @@ class LandingPage(ctk.CTkFrame):
 
         create_btn = ctk.CTkButton(
             right,
-            text="Create Staff Account",
+            text="Create Account",
             width=220,
             height=38,
             fg_color="white",
@@ -159,12 +159,4 @@ class LandingPage(ctk.CTkFrame):
         )
         hint.grid(row=4, column=0, sticky="w", padx=18, pady=(8, 0))
 
-        small_footer = ctk.CTkLabel(
-            right,
-            text="Need help? Contact your system administrator.",
-            text_color="#A0A0A0",
-            font=ctk.CTkFont(size=10),
-            wraplength=320,
-            justify="left",
-        )
-        small_footer.grid(row=5, column=0, sticky="w", padx=18, pady=(24, 10))
+        

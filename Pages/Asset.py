@@ -346,8 +346,7 @@ class AssetsPage(ctk.CTkFrame):
         cat_label.grid(row=8, column=0, sticky="w", pady=(8, 0))
 
         default_categories = [
-            "Basketball", "Volleyball", "Badminton",
-            "Yoga", "Fitness", "Racquet Sports", "Equipment Checkout"
+            "Fitness Equipment", "Equipment Checkout"
         ]
 
         category_combo = ctk.CTkComboBox(

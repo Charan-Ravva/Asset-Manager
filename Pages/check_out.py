@@ -37,7 +37,7 @@ class CheckOutPage(ctk.CTkFrame):
 
         subtitle_label = ctk.CTkLabel(
             top_bar,
-            text="  •  Issue SAC equipment to students",
+            text="  •  Issue equipment to students",
             text_color="#777777",
             font=ctk.CTkFont(size=13),
         )
