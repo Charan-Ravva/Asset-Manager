@@ -48,15 +48,13 @@ venv\Scripts\activate      # Windows
 - python main.py
 
 ## Use Case
-This application was developed to simulate and demonstrate a real operational system used by university staff to manage shared equipment.
-It emphasizes clear workflows, accountability, and ease of use in a real institutional environment.
+This application was developed as a real-world system for the Student Activity Center (SAC) at Central Michigan University**, enabling staff to manage shared equipment efficiently.  
 
 ## Author
 Sri Charan Ravva
-Master’s Student – Information Systems
-Central Michigan University
-GitHub: https://github.com/Charan-Ravva
-LinkedIn: www.linkedin.com/in/sricharanravva
+- Master’s Student – Information Systems, Central Michigan University
+- GitHub: https://github.com/Charan-Ravva
+- LinkedIn: www.linkedin.com/in/sricharanravva
 
 ## License
 This project is open-source and intended for educational, learning purposes.
