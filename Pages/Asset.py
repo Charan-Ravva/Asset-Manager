@@ -4,6 +4,15 @@ from tkinter import ttk, messagebox
 
 from db_conn import get_connection
 
+import sys
+import os
+
+def resource_path(relative_path):
+    if getattr(sys, "frozen", False):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.dirname(__file__), "..", relative_path)
+
+
 TEXT_DARK = "#222222"
 CARD_BG = "#F5F5F5"
 
@@ -152,8 +161,12 @@ class AssetsPage(ctk.CTkFrame):
 
     # ---------- IMAGE LOADER ----------
     def _load_checkbox_images(self):
-        unchecked = tk.PhotoImage(file="Images/unchecked.png")
-        checked = tk.PhotoImage(file="Images/checkbox.png")
+        unchecked = tk.PhotoImage(
+            file=resource_path("Images/unchecked.png")
+        )
+        checked = tk.PhotoImage(
+            file=resource_path("Images/checkbox.png")
+        )
 
         max_size = 22
 
@@ -358,18 +371,63 @@ class AssetsPage(ctk.CTkFrame):
         category_combo.grid(row=9, column=0, sticky="w", pady=(2, 0))
         category_combo.set("")
 
-        def on_add_category():
-            dlg = ctk.CTkInputDialog(
-                title="Add Category",
-                text="Enter new category name:"
+        def open_add_category_dialog():
+            dialog = ctk.CTkToplevel(self)
+            dialog.title("Add Category")
+            dialog.geometry("360x180")
+            dialog.resizable(False, False)
+            dialog.grab_set()
+
+            self._center_window(dialog, 360, 180)
+
+            ctk.CTkLabel(
+                dialog,
+                text="Add New Category",
+                font=ctk.CTkFont(size=16)
+            ).pack(pady=(15, 10))
+
+            entry = ctk.CTkEntry(
+                dialog,
+                width=280,
+                height=32,
+                placeholder_text="Enter category name"
             )
-            new_cat = dlg.get_input()
-            if new_cat:
-                vals = list(category_combo.cget("values"))
-                if new_cat not in vals:
-                    vals.append(new_cat)
-                    category_combo.configure(values=vals)
-                category_combo.set(new_cat)
+            entry.pack(pady=(0, 15))
+            entry.focus()
+
+            btn_frame = ctk.CTkFrame(dialog, fg_color="transparent")
+            btn_frame.pack(pady=(0, 10))
+
+            def on_add():
+                value = entry.get().strip()
+                if value:
+                    vals = list(category_combo.cget("values"))
+                    if value not in vals:
+                        vals.append(value)
+                        category_combo.configure(values=vals)
+                    category_combo.set(value)
+                dialog.destroy()
+
+            ctk.CTkButton(
+                btn_frame,
+                text="Cancel",
+                width=100,
+                fg_color="#CCCCCC",
+                hover_color="#AAAAAA",
+                text_color="#333333",
+                command=dialog.destroy
+            ).pack(side="left", padx=8)
+
+            ctk.CTkButton(
+                btn_frame,
+                text="Add",
+                width=100,
+                fg_color="#6A0032",
+                hover_color="#4C0025",
+                text_color="white",
+                command=on_add
+            ).pack(side="left", padx=8)
+
 
         add_cat_btn = ctk.CTkButton(
             form_frame,
@@ -380,7 +438,8 @@ class AssetsPage(ctk.CTkFrame):
             hover_color="#4C0025",
             text_color="white",
             font=ctk.CTkFont(size=12, weight="bold"),
-            command=on_add_category
+            command=open_add_category_dialog
+
         )
         add_cat_btn.grid(row=9, column=1, sticky="e",
                          padx=(8, 0), pady=(2, 0))
@@ -554,18 +613,63 @@ class AssetsPage(ctk.CTkFrame):
         category_combo.grid(row=9, column=0, sticky="w", pady=(2, 0))
         category_combo.set(current_category or "")
 
-        def on_add_category():
-            dlg = ctk.CTkInputDialog(
-                title="Add Category",
-                text="Enter new category name:"
+        def open_add_category_dialog():
+            dialog = ctk.CTkToplevel(self)
+            dialog.title("Add Category")
+            dialog.geometry("360x180")
+            dialog.resizable(False, False)
+            dialog.grab_set()
+
+            self._center_window(dialog, 360, 180)
+
+            ctk.CTkLabel(
+                dialog,
+                text="Add New Category",
+                font=ctk.CTkFont(size=16)
+            ).pack(pady=(15, 10))
+
+            entry = ctk.CTkEntry(
+                dialog,
+                width=280,
+                height=32,
+                placeholder_text="Enter category name"
             )
-            new_cat = dlg.get_input()
-            if new_cat:
-                vals = list(category_combo.cget("values"))
-                if new_cat not in vals:
-                    vals.append(new_cat)
-                    category_combo.configure(values=vals)
-                category_combo.set(new_cat)
+            entry.pack(pady=(0, 15))
+            entry.focus()
+
+            btn_frame = ctk.CTkFrame(dialog, fg_color="transparent")
+            btn_frame.pack(pady=(0, 10))
+
+            def on_add():
+                value = entry.get().strip()
+                if value:
+                    vals = list(category_combo.cget("values"))
+                    if value not in vals:
+                        vals.append(value)
+                        category_combo.configure(values=vals)
+                    category_combo.set(value)
+                dialog.destroy()
+
+            ctk.CTkButton(
+                btn_frame,
+                text="Cancel",
+                width=100,
+                fg_color="#CCCCCC",
+                hover_color="#AAAAAA",
+                text_color="#333333",
+                command=dialog.destroy
+            ).pack(side="left", padx=8)
+
+            ctk.CTkButton(
+                btn_frame,
+                text="Add",
+                width=100,
+                fg_color="#6A0032",
+                hover_color="#4C0025",
+                text_color="white",
+                command=on_add
+            ).pack(side="left", padx=8)
+
 
         add_cat_btn = ctk.CTkButton(
             form_frame,
@@ -576,7 +680,7 @@ class AssetsPage(ctk.CTkFrame):
             hover_color="#4C0025",
             text_color="white",
             font=ctk.CTkFont(size=12, weight="bold"),
-            command=on_add_category
+            command=open_add_category_dialog
         )
         add_cat_btn.grid(row=9, column=1, sticky="e",
                          padx=(8, 0), pady=(2, 0))

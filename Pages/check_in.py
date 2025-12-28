@@ -1,6 +1,8 @@
 import customtkinter as ctk
 import tkinter as tk
 from tkinter import ttk, messagebox
+from utils.path_helper import resource_path
+
 
 from Pages.students import to_michigan
 from db_conn import get_connection
@@ -169,8 +171,12 @@ class CheckInPage(ctk.CTkFrame):
 
     # ---------- IMAGE LOADER ----------
     def _load_checkbox_images(self):
-        unchecked = tk.PhotoImage(file="Images/unchecked.png")
-        checked = tk.PhotoImage(file="Images/checkbox.png")
+        unchecked = tk.PhotoImage(
+            file=resource_path("Images/unchecked.png")
+        )
+        checked = tk.PhotoImage(
+            file=resource_path("Images/checkbox.png")
+        )
 
         max_size = 22
 
@@ -182,6 +188,7 @@ class CheckInPage(ctk.CTkFrame):
             return img.subsample(factor, factor)
 
         return scale(unchecked), scale(checked)
+
 
     # ---------- SEARCH ----------
     def _on_search_changed(self, event=None):

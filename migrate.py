@@ -1,23 +1,29 @@
 from db_conn import get_connection
 
 conn = get_connection()
-c = conn.cursor()
+cur = conn.cursor()
 
-alter_commands = [
-    "ALTER TABLE checkout ADD COLUMN phone TEXT;",
-    "ALTER TABLE checkout ADD COLUMN notes TEXT;",
-    "ALTER TABLE checkout ADD COLUMN status TEXT NOT NULL DEFAULT 'Checked Out';",
-    "ALTER TABLE assets ADD COLUMN asset_tag_id TEXT;",
-    "ALTER TABLE assets ADD COLUMN location TEXT;",
-]
+# Check if assets table exists
+cur.execute("""
+SELECT name FROM sqlite_master
+WHERE type='table' AND name='assets';
+""")
 
-for cmd in alter_commands:
+if not cur.fetchone():
+    print("assets table does not exist. Skipping migration.")
+else:
     try:
-        c.execute(cmd)
-        print("OK:", cmd)
+        cur.execute("ALTER TABLE assets ADD COLUMN asset_tag_id TEXT")
+        print("asset_tag_id column added")
     except Exception as e:
-        print("SKIPPED:", cmd, "->", e)
+        print("asset_tag_id:", e)
+
+    try:
+        cur.execute("ALTER TABLE assets ADD COLUMN location TEXT")
+        print("location column added")
+    except Exception as e:
+        print("location:", e)
 
 conn.commit()
 conn.close()
-print("Migration done!")
+print("Migration finished.")

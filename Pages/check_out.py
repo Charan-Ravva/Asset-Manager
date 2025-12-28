@@ -1,6 +1,8 @@
 import customtkinter as ctk
 import tkinter as tk
 from tkinter import ttk, messagebox
+from utils.path_helper import resource_path
+
 
 from datetime import datetime
 from zoneinfo import ZoneInfo
@@ -254,17 +256,19 @@ class CheckOutPage(ctk.CTkFrame):
     # ---------- helper to load & scale checkbox icons ----------
     def _load_checkbox_images(self):
         """Load checkbox PNGs and shrink them if they are large."""
-        unchecked_orig = tk.PhotoImage(file="Images/unchecked.png")
-        checked_orig = tk.PhotoImage(file="Images/checkbox.png")
+        unchecked_orig = tk.PhotoImage(
+            file=resource_path("Images/unchecked.png")
+        )
+        checked_orig = tk.PhotoImage(
+            file=resource_path("Images/checkbox.png")
+        )
 
         max_size = 22  # target max width/height in pixels
 
         def scale(img):
             w, h = img.width(), img.height()
-            # if already small enough, return as-is
             if w <= max_size and h <= max_size:
                 return img
-            # compute integer subsample factor (at least 1)
             factor = max(int(w / max_size), int(h / max_size), 1)
             return img.subsample(factor, factor)
 

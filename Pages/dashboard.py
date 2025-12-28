@@ -36,6 +36,9 @@ class DashboardPage(ctk.CTkFrame):
         role   = 'admin' or 'staff'
         """
         super().__init__(master, fg_color="white")
+        self.nav_buttons = {}
+
+        
 
         self.master = master
         self.user_id = user_id
@@ -84,7 +87,7 @@ class DashboardPage(ctk.CTkFrame):
         def make_nav_button(text, command):
             btn = ctk.CTkButton(
                 self.sidebar,
-                text=text,
+                text=f"    {text}",
                 fg_color="transparent",
                 hover_color="#4C0025",
                 text_color="white",
@@ -94,7 +97,7 @@ class DashboardPage(ctk.CTkFrame):
                 height=40,
                 command=command
             )
-            btn.pack(fill="x", padx=15, pady=4)
+            btn.pack(fill="x", padx=0, pady=4)
             self.nav_buttons[text] = btn
             return btn
 
@@ -141,9 +144,18 @@ class DashboardPage(ctk.CTkFrame):
         if self.current_view is not None:
             self.current_view.destroy()
             self.current_view = None
+    
+    # ---------- SIDEBAR HIGHLIGHT ----------
+    def set_active_nav(self, page_name):
+        for name, btn in self.nav_buttons.items():
+            if name == page_name:
+                btn.configure(fg_color="#4C0025")   # active
+            else:
+                btn.configure(fg_color="transparent")
 
     # ---------- DASHBOARD VIEW ----------
     def show_dashboard_view(self):
+        self.set_active_nav("Dashboard")
         self.clear_content()
 
         view = ctk.CTkFrame(self.content_frame, fg_color="#FFFFFF")
@@ -374,32 +386,38 @@ class DashboardPage(ctk.CTkFrame):
 
     # ---------- NAV PAGES ----------
     def show_assets_page(self):
+        self.set_active_nav("Assets")
         self.clear_content()
         self.current_view = AssetsPage(self.content_frame)
         self.current_view.pack(fill="both", expand=True)
 
     def show_checkout_page(self):
+        self.set_active_nav("Check Out")
         self.clear_content()
         self.current_view = CheckOutPage(self.content_frame)
         self.current_view.pack(fill="both", expand=True)
 
     def show_checkin_page(self):
+        self.set_active_nav("Check In")
         self.clear_content()
         self.current_view = CheckInPage(self.content_frame)
         self.current_view.pack(fill="both", expand=True)
 
     def show_students_page(self):
         """Show the Students management page inside content_frame."""
+        self.set_active_nav("History")
         self.clear_content()
         self.current_view = StudentsPage(self.content_frame)
         self.current_view.pack(fill="both", expand=True)
     
     def show_staff_page(self):
+        self.set_active_nav("Staff")
         self.clear_content()
         self.current_view = StaffPage(self.content_frame)
         self.current_view.pack(fill="both", expand=True)
 
     def show_settings_page(self):
+        self.set_active_nav("Settings")
         self.clear_content()
         self.current_view = SettingsPage(self.content_frame, self.user_id)
         self.current_view.pack(fill="both", expand=True)
